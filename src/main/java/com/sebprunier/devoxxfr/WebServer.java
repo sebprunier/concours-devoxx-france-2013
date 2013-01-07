@@ -11,12 +11,24 @@ import java.io.PrintWriter;
 
 public class WebServer {
 
-    public static void main(String[] args) throws Exception {
-        int port = Integer.parseInt(System.getenv("PORT"));
-        Server server = new Server(port);
+    private Server server;
+
+    public WebServer(int port) {
+        this.server = new Server(port);
         server.setHandler(new WebServerHandler());
-        server.start();
-        server.join();
+    }
+
+    public void start() throws Exception {
+        this.server.start();
+    }
+
+    public void startAndWait() throws Exception {
+        start();
+        this.server.join();
+    }
+
+    public void stop() throws Exception {
+        this.server.stop();
     }
 
     private static class WebServerHandler extends AbstractHandler {
@@ -36,5 +48,12 @@ public class WebServer {
             writer.println(answer);
             writer.close();
         }
+
+    }
+
+    public static void main(String[] args) throws Exception {
+        int port = Integer.parseInt(System.getenv("PORT"));
+        WebServer webServer = new WebServer(port);
+        webServer.startAndWait();
     }
 }
