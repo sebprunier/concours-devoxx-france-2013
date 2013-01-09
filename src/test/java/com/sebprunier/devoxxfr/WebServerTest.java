@@ -67,4 +67,15 @@ public class WebServerTest {
         Assert.assertEquals("OUI", reader.readLine());
         reader.close();
     }
+
+    @Test
+    public void question3_should_return_oui() throws Exception {
+        URL url = new URL("http://localhost:" + port + "/?q=Es+tu+heureux+de+participer(OUI/NON)");
+        HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
+        Assert.assertEquals(200, httpConn.getResponseCode());
+        BufferedReader reader = new BufferedReader(new InputStreamReader(httpConn.getInputStream()));
+        Assert.assertEquals("OUI", reader.readLine());
+        reader.close();
+    }
+
 }
