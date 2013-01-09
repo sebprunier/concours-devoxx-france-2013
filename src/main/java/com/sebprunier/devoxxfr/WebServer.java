@@ -43,6 +43,7 @@ public class WebServer {
             ANSWERS.put("Quelle est ton adresse email", "sebastien.prunier@gmail.com");
             ANSWERS.put("Es tu abonne a la mailing list(OUI/NON)", "OUI");
             ANSWERS.put("Es tu heureux de participer(OUI/NON)", "OUI");
+            ANSWERS.put("Es tu pret a recevoir une enonce au format markdown par http post(OUI/NON)", "OUI");
         }
 
         @Override

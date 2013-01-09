@@ -78,4 +78,14 @@ public class WebServerTest {
         reader.close();
     }
 
+    @Test
+    public void question4_should_return_oui() throws Exception {
+        URL url = new URL("http://localhost:" + port + "/?q=Es+tu+pret+a+recevoir+une+enonce+au+format+markdown+par+http+post(OUI/NON)");
+        HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
+        Assert.assertEquals(200, httpConn.getResponseCode());
+        BufferedReader reader = new BufferedReader(new InputStreamReader(httpConn.getInputStream()));
+        Assert.assertEquals("OUI", reader.readLine());
+        reader.close();
+    }
+
 }
