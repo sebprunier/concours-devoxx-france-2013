@@ -88,4 +88,13 @@ public class WebServerTest {
         reader.close();
     }
 
+    @Test
+    public void question5_should_return_non() throws Exception {
+        URL url = new URL("http://localhost:" + port + "/?q=Est+ce+que+tu+reponds+toujours+oui(OUI/NON)");
+        HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
+        Assert.assertEquals(200, httpConn.getResponseCode());
+        BufferedReader reader = new BufferedReader(new InputStreamReader(httpConn.getInputStream()));
+        Assert.assertEquals("NON", reader.readLine());
+        reader.close();
+    }
 }
