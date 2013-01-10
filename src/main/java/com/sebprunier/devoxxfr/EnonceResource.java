@@ -9,15 +9,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.util.Properties;
 
 public class EnonceResource implements Resource {
 
     public void handle(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String body = IOUtils.toString(request.getInputStream(), Charset.defaultCharset());
-        System.out.println(body);
-        sendByMail(request.getRequestURI(), body);
+        String body = IOUtils.toString(request.getInputStream());
+        System.out.println(URLDecoder.decode(body, Charset.defaultCharset().toString()));
+        // sendByMail(request.getRequestURI(), body);
         response.setContentType("text/plain");
         response.setStatus(HttpServletResponse.SC_OK);
         PrintWriter writer = response.getWriter();
@@ -25,7 +26,7 @@ public class EnonceResource implements Resource {
         writer.close();
     }
 
-    private void sendByMail(String requestURI, String body) {
+    /*private void sendByMail(String requestURI, String body) {
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.socketFactory.port", "465");
@@ -52,5 +53,5 @@ public class EnonceResource implements Resource {
         } catch (MessagingException e) {
             e.printStackTrace(System.err);
         }
-    }
+    }*/
 }
