@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 
 import org.mortbay.jetty.handler.AbstractHandler;
@@ -15,18 +16,20 @@ public class WebServerHandler extends AbstractHandler {
     @Override
     public void handle(String target, HttpServletRequest request, HttpServletResponse response, int dispatch)
             throws IOException, ServletException {
+        HttpServletRequestWrapper wrappedRequest = new HttpServletRequestWrapper(request);
         if ("GET".equals(request.getMethod()) && "/".equals(target)
                 && request.getParameter(QuestionResource.QUESTION_PARAMETER) != null) {
-            new QuestionResource().handle(request, response);
+            new QuestionResource().handle(wrappedRequest, response);
         } else {
-            dumpRequest(request);
+            dumpRequest(wrappedRequest);
         }
 
     }
 
-    private void dumpRequest(HttpServletRequest request) throws IOException {
-        System.out.println("Unknown request : " + request.toString());
-        BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream()));
+    private void dumpRequest(HttpServletRequestWrapper wrappedRequest) throws IOException {
+        System.out.println("Unknown request : " + wrappedRequest.getRequest().toString());
+        // FIXME body is not logged !!
+        BufferedReader reader = new BufferedReader(new InputStreamReader(wrappedRequest.getInputStream()));
         String bodyLine = reader.readLine();
         while (bodyLine != null) {
             System.out.println(bodyLine);
