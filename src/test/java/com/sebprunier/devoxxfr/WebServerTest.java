@@ -29,16 +29,6 @@ public class WebServerTest {
     }
 
     @Test
-    public void no_question_should_return_error() throws Exception {
-        URL url = new URL("http://localhost:" + port);
-        HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
-        Assert.assertEquals(200, httpConn.getResponseCode());
-        BufferedReader reader = new BufferedReader(new InputStreamReader(httpConn.getInputStream()));
-        Assert.assertEquals("Bad question ...", reader.readLine());
-        reader.close();
-    }
-
-    @Test
     public void bad_question_should_return_error() throws Exception {
         URL url = new URL("http://localhost:" + port + "/?q=xxx");
         HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
