@@ -1,24 +1,29 @@
 package com.sebprunier.devoxxfr;
 
 import org.apache.commons.io.IOUtils;
+import org.eclipse.egit.github.core.Gist;
+import org.eclipse.egit.github.core.GistFile;
+import org.eclipse.egit.github.core.client.GitHubClient;
+import org.eclipse.egit.github.core.service.GistService;
 
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
-import java.util.Properties;
+import java.util.Map;
 
 public class EnonceResource implements Resource {
 
+    private static final String JOBS_GIST_ID = "4506260";
+
     public void handle(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String body = IOUtils.toString(request.getInputStream());
-        System.out.println(URLDecoder.decode(body, Charset.defaultCharset().toString()));
-        // sendByMail(request.getRequestURI(), body);
+        String enonce = IOUtils.toString(request.getInputStream());
+        enonce = URLDecoder.decode(enonce, Charset.defaultCharset().toString());
+        System.out.println(enonce);
+        String enonceId = request.getRequestURI().split("/")[2];
+        sendToGithub(enonceId, enonce);
         response.setContentType("text/plain");
         response.setStatus(HttpServletResponse.SC_OK);
         PrintWriter writer = response.getWriter();
@@ -26,32 +31,37 @@ public class EnonceResource implements Resource {
         writer.close();
     }
 
-    /*private void sendByMail(String requestURI, String body) {
-        Properties props = new Properties();
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.socketFactory.port", "465");
-        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.port", "465");
-
-        Session session = Session.getDefaultInstance(props,
-                new javax.mail.Authenticator() {
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(System.getenv("SMTP_USER"), System.getenv("SMTP_PASSWORD"));
-                    }
-                });
+    private void sendToGithub(String enonceId, String enonce) {
+        final String githubUser = System.getenv("github.user");
+        final String githubPassword = System.getenv("github.password");
 
         try {
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("vast-scrubland-8307@herokuapp.com"));
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("sebastien.prunier@gmail.com"));
-            message.setSubject(requestURI);
-            message.setText(body);
+            // Create client and gist service
+            GitHubClient client = new GitHubClient();
+            client.setCredentials(githubUser, githubPassword);
+            GistService service = new GistService(client);
 
-            Transport.send(message);
+            // Retrieve gist
+            Gist gist = service.getGist(JOBS_GIST_ID);
+            String fileName = "enonce-" + enonceId + ".md";
+            Map<String, GistFile> gistFiles = gist.getFiles();
+            GistFile file = gistFiles.get(fileName);
+            if (file != null) {
+                file.setContent(enonce);
+            } else {
+                file = new GistFile();
+                file.setContent(enonce);
+                file.setFilename(fileName);
+                gistFiles.put(fileName, file);
+                gist.setFiles(gistFiles);
+            }
+            // Update gist !
+            service.updateGist(gist);
 
-        } catch (MessagingException e) {
-            e.printStackTrace(System.err);
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-    }*/
+    }
+
+
 }
