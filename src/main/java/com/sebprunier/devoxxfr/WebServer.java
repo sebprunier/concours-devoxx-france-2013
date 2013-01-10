@@ -54,7 +54,7 @@ public class WebServer {
             String answer = ANSWERS.get(question);
             if (answer == null) {
                 answer = "Bad question ...";
-                System.out.println("Unknown request : " + request.toString());
+                dumpRequest(request);
             }
             response.setContentType("text/plain;charset=utf-8");
             response.setStatus(HttpServletResponse.SC_OK);
@@ -62,11 +62,21 @@ public class WebServer {
             writer.println(answer);
             writer.close();
         }
+
+        private void dumpRequest(HttpServletRequest request) throws IOException {
+            System.out.println("Unknown request : " + request.toString());
+            BufferedReader reader = request.getReader();
+            String bodyLine = reader.readLine();
+            while (bodyLine != null) {
+                System.out.println(bodyLine);
+                bodyLine = reader.readLine();
+            }
+        }
     }
 
     public static void main(String[] args) throws Exception {
-//        int port = 8888;
-        int port = Integer.parseInt(System.getenv("PORT"));
+        int port = 8888;
+//        int port = Integer.parseInt(System.getenv("PORT"));
         WebServer webServer = new WebServer(port);
         webServer.startAndWait();
     }
