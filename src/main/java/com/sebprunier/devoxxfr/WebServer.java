@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
@@ -65,7 +66,7 @@ public class WebServer {
 
         private void dumpRequest(HttpServletRequest request) throws IOException {
             System.out.println("Unknown request : " + request.toString());
-            BufferedReader reader = request.getReader();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream()));
             String bodyLine = reader.readLine();
             while (bodyLine != null) {
                 System.out.println(bodyLine);
