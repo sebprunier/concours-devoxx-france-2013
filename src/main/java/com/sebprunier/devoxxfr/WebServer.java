@@ -75,8 +75,8 @@ public class WebServer {
     }
 
     public static void main(String[] args) throws Exception {
-        int port = 8888;
-//        int port = Integer.parseInt(System.getenv("PORT"));
+//        int port = 8888;
+        int port = Integer.parseInt(System.getenv("PORT"));
         WebServer webServer = new WebServer(port);
         webServer.startAndWait();
     }
