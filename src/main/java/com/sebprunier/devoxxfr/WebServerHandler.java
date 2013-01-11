@@ -18,7 +18,10 @@ public class WebServerHandler extends AbstractHandler {
         } else if ("GET".equals(request.getMethod()) && "/".equals(target)
                 && request.getParameter(QuestionResource.QUESTION_PARAMETER) != null) {
             new QuestionResource().handle(request, response);
-        } else {
+        } else if ("GET".equals(request.getMethod()) && target.startsWith("/scalaskel/change/")) {
+            new ScalaskelChangeResource().handle(request, response);
+        }
+        else {
             System.out.println("Unmanaged request : " + target);
             response.setContentType("text/plain");
             response.setStatus(HttpServletResponse.SC_OK);

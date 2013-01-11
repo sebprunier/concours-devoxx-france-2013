@@ -24,11 +24,11 @@ public class EnonceResource implements Resource {
         System.out.println(enonce);
         String enonceId = request.getRequestURI().split("/")[2];
         sendToGithub(enonceId, enonce);
-        response.setContentType("text/plain");
-        response.setStatus(HttpServletResponse.SC_OK);
-        PrintWriter writer = response.getWriter();
-        writer.println("Thanks !");
-        writer.close();
+        // response.setContentType("text/plain");
+        response.setStatus(HttpServletResponse.SC_CREATED);
+        // PrintWriter writer = response.getWriter();
+        // writer.println("Thanks !");
+        // writer.close();
     }
 
     private void sendToGithub(String enonceId, String enonce) {
