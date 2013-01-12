@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,8 +36,10 @@ public class QuestionResource implements Resource {
                 expr = expr.replaceAll(",", "\\.");
                 Object res = new GroovyShell().evaluate(expr);
                 answer = String.valueOf(res);
+                answer = new DecimalFormat("0.#####").format(Double.valueOf(answer));
                 answer = answer.replaceAll("\\.", ",");
             } catch (Exception e) {
+                e.printStackTrace(System.err);
                 answer = "Bad question ...";
                 System.out.println("Unknown question : " + question);
             }
