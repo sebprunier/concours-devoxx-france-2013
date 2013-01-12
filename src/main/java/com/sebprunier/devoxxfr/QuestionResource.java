@@ -1,5 +1,7 @@
 package com.sebprunier.devoxxfr;
 
+import groovy.lang.GroovyShell;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -10,7 +12,6 @@ import java.util.Map;
 public class QuestionResource implements Resource {
 
     public static final String QUESTION_PARAMETER = "q";
-
     private static final Map<String, String> ANSWERS = new HashMap<String, String>();
 
     static {
@@ -20,7 +21,6 @@ public class QuestionResource implements Resource {
         ANSWERS.put("Es tu pret a recevoir une enonce au format markdown par http post(OUI/NON)", "OUI");
         ANSWERS.put("Est ce que tu reponds toujours oui(OUI/NON)", "NON");
         ANSWERS.put("As tu bien recu le premier enonce(OUI/NON)", "OUI");
-        ANSWERS.put("1 1", "2");
     }
 
     @Override
@@ -28,8 +28,16 @@ public class QuestionResource implements Resource {
         String question = request.getParameter(QUESTION_PARAMETER);
         String answer = ANSWERS.get(question);
         if (answer == null) {
-            answer = "Bad question ...";
-            System.out.println("Unknown question : " + question);
+            // Try groovy interpreter ...
+            // FIXME security issue here !!!
+            try {
+                String expr = question.replaceAll(" ", "+");
+                Object res = new GroovyShell().evaluate(expr);
+                answer = String.valueOf(res);
+            } catch (Exception e) {
+                answer = "Bad question ...";
+                System.out.println("Unknown question : " + question);
+            }
         }
         response.setContentType("text/plain");
         response.setStatus(HttpServletResponse.SC_OK);

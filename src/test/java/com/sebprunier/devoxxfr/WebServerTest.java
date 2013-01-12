@@ -87,4 +87,14 @@ public class WebServerTest {
         Assert.assertEquals("NON", reader.readLine());
         reader.close();
     }
+
+    @Test
+    public void one_plus_one_should_return_2() throws Exception {
+        URL url = new URL("http://localhost:" + port + "/?q=1+1");
+        HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
+        Assert.assertEquals(200, httpConn.getResponseCode());
+        BufferedReader reader = new BufferedReader(new InputStreamReader(httpConn.getInputStream()));
+        Assert.assertEquals("2", reader.readLine());
+        reader.close();
+    }
 }
