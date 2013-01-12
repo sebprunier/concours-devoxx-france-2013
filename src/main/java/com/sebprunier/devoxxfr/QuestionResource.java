@@ -20,6 +20,7 @@ public class QuestionResource implements Resource {
         ANSWERS.put("Es tu pret a recevoir une enonce au format markdown par http post(OUI/NON)", "OUI");
         ANSWERS.put("Est ce que tu reponds toujours oui(OUI/NON)", "NON");
         ANSWERS.put("As tu bien recu le premier enonce(OUI/NON)", "OUI");
+        ANSWERS.put("1 1", "2");
     }
 
     @Override
