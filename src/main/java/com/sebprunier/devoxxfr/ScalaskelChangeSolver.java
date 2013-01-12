@@ -9,7 +9,7 @@ public class ScalaskelChangeSolver {
     static {
         COINS.put("foo", 1);
         COINS.put("bar", 7);
-        COINS.put("qix", 10);
+        COINS.put("qix", 11);
         COINS.put("baz", 21);
     }
 
