@@ -32,8 +32,10 @@ public class QuestionResource implements Resource {
             // FIXME security issue here !!!
             try {
                 String expr = question.replaceAll(" ", "+");
+                expr = expr.replaceAll(",", "\\.");
                 Object res = new GroovyShell().evaluate(expr);
                 answer = String.valueOf(res);
+                answer = answer.replaceAll("\\.", ",");
             } catch (Exception e) {
                 answer = "Bad question ...";
                 System.out.println("Unknown question : " + question);
