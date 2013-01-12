@@ -7,10 +7,10 @@ public class ScalaskelChangeSolver {
     private static final Map<String, Integer> COINS = new HashMap<String, Integer>();
 
     static {
-        COINS.put("Foo", 1);
-        COINS.put("Bar", 7);
-        COINS.put("Qix", 10);
-        COINS.put("Baz", 21);
+        COINS.put("foo", 1);
+        COINS.put("bar", 7);
+        COINS.put("qix", 10);
+        COINS.put("baz", 21);
     }
 
     private static void calculateSolution(Integer value, String[] coins, Set<Map<String, Integer>> solutions, Map<String, Integer> partialSolution) {
@@ -58,16 +58,16 @@ public class ScalaskelChangeSolver {
 
     private static Map<String, Integer> newPartialSolution() {
         Map<String, Integer> map = new HashMap<String, Integer>();
-        map.put("Foo", 0);
-        map.put("Bar", 0);
-        map.put("Qix", 0);
-        map.put("Baz", 0);
+        map.put("foo", 0);
+        map.put("bar", 0);
+        map.put("qix", 0);
+        map.put("baz", 0);
         return map;
     }
 
     public Set<Map<String, Integer>> solve(Integer value) {
         Set<Map<String, Integer>> solutions = new HashSet<Map<String, Integer>>();
-        calculateSolution(value, new String[]{"Baz", "Qix", "Bar", "Foo"}, solutions, newPartialSolution());
+        calculateSolution(value, new String[]{"baz", "qix", "bar", "foo"}, solutions, newPartialSolution());
         return solutions;
     }
 }
