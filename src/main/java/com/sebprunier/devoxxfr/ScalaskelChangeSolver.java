@@ -27,8 +27,8 @@ public class ScalaskelChangeSolver {
                 solutions.add(clonedPartialSolution);
             }
 
-            if (coins.length > 1) {
-                if (quotient > 0 && remainder != 0) {
+            //if (coins.length > 1) {
+                if (quotient > 0) {
                     // this coin is valid, store it in partial solution and continue with it.
                     Map<String, Integer> clonedPartialSolution = clonePartialSolution(partialSolution);
                     clonedPartialSolution.put(coinName, clonedPartialSolution.get(coinName) + 1);
@@ -41,7 +41,7 @@ public class ScalaskelChangeSolver {
                 // ignore this coin and try this others
                 Map<String, Integer> clonedPartialSolution = clonePartialSolution(partialSolution);
                 calculateSolution(value, popOneCoin(coins), solutions, clonedPartialSolution);
-            }
+            //}
         }
     }
 
