@@ -19,8 +19,7 @@ public class EnonceResource implements Resource {
     private static final String JOBS_GIST_ID = "4506260";
 
     public void handle(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String enonce = IOUtils.toString(request.getInputStream());
-        enonce = URLDecoder.decode(enonce, Charset.defaultCharset().toString());
+        String enonce = IOUtils.toString(request.getReader());
         System.out.println(enonce);
         String enonceId = request.getRequestURI().split("/")[2];
         sendToGithub(enonceId, enonce);
