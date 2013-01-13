@@ -36,7 +36,7 @@ public class QuestionResource implements Resource {
                 expr = expr.replaceAll(",", "\\.");
                 Object res = new GroovyShell().evaluate(expr);
                 answer = String.valueOf(res);
-                answer = new DecimalFormat("0.#####").format(Double.valueOf(answer));
+                answer = new DecimalFormat("0.####################E0").format(Double.valueOf(answer));
                 answer = answer.replaceAll("\\.", ",");
             } catch (Exception e) {
                 e.printStackTrace(System.err);
