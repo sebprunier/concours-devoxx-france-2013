@@ -45,6 +45,7 @@
                         <id>run-stories-as-embeddables</id>
                         <phase>test</phase>
                         <configuration>
+                            <skip>true</skip>
                             <scope>test</scope>
                             <includes>
                                 <include>**/ICan*.java</include>
