@@ -14,7 +14,7 @@ import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.util.Map;
 
-public class EnonceResource implements Resource {
+public class StatementResource implements Resource {
 
     private static final String JOBS_GIST_ID = "4506260";
 

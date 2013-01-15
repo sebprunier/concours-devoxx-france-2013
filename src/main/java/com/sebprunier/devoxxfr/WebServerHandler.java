@@ -1,5 +1,6 @@
 package com.sebprunier.devoxxfr;
 
+import com.sebprunier.devoxxfr.scalaskel.ScalaskelChangeResource;
 import org.mortbay.jetty.handler.AbstractHandler;
 
 import javax.servlet.ServletException;
@@ -14,7 +15,7 @@ public class WebServerHandler extends AbstractHandler {
     public void handle(String target, HttpServletRequest request, HttpServletResponse response, int dispatch)
             throws IOException, ServletException {
         if ("POST".equals(request.getMethod()) && target.startsWith("/enonce/")) {
-            new EnonceResource().handle(request, response);
+            new StatementResource().handle(request, response);
         } else if ("GET".equals(request.getMethod()) && "/".equals(target)
                 && request.getParameter(QuestionResource.QUESTION_PARAMETER) != null) {
             new QuestionResource().handle(request, response);

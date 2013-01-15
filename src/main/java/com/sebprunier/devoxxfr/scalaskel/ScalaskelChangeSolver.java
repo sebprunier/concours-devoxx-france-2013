@@ -1,4 +1,4 @@
-package com.sebprunier.devoxxfr;
+package com.sebprunier.devoxxfr.scalaskel;
 
 import java.util.*;
 

@@ -23,7 +23,7 @@ public class QuestionStep {
     }
 
     @Then("the answer must be $expectedAnswer")
-    public void theGridShouldLookLike(String expectedAnswer) throws Exception {
+    public void theAnswerShouldLookLike(String expectedAnswer) throws Exception {
         Assert.assertEquals(200, answer.getStatus());
         Assert.assertEquals(expectedAnswer, answer.getBody());
     }

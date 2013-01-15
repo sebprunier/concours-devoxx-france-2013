@@ -1,4 +1,6 @@
-package com.sebprunier.devoxxfr;
+package com.sebprunier.devoxxfr.scalaskel;
+
+import com.sebprunier.devoxxfr.Resource;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

@@ -47,8 +47,7 @@
                         <configuration>
                             <scope>test</scope>
                             <includes>
-                                <include>com/sebprunier/devoxxfr/ICanPostBasicQuestions.java</include>
-                                <include>com/sebprunier/devoxxfr/ICanPostArithmeticQuestions.java</include>
+                                <include>**/ICan*.java</include>
                             </includes>
                         </configuration>
                         <goals>

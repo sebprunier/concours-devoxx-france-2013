@@ -1,6 +1,6 @@
 package com.sebprunier.devoxxfr;
 
-class Answer {
+public class Answer {
     private int status;
     private String body;
 
