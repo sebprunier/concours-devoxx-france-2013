@@ -1,9 +1,12 @@
-package com.sebprunier.devoxxfr;
+package com.sebprunier.devoxxfr.question;
 
 import groovy.lang.GroovyShell;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.sebprunier.devoxxfr.Resource;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;

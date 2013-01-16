@@ -1,4 +1,11 @@
-package com.sebprunier.devoxxfr;
+package com.sebprunier.devoxxfr.statement;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
 import org.eclipse.egit.github.core.Gist;
@@ -6,13 +13,7 @@ import org.eclipse.egit.github.core.GistFile;
 import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.GistService;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.URLDecoder;
-import java.nio.charset.Charset;
-import java.util.Map;
+import com.sebprunier.devoxxfr.Resource;
 
 public class StatementResource implements Resource {
 

@@ -1,12 +1,17 @@
 package com.sebprunier.devoxxfr;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.io.ByteArrayInputStream;
 import java.util.Random;
 
+import com.meterware.httpunit.GetMethodWebRequest;
+import com.meterware.httpunit.PostMethodWebRequest;
+import com.meterware.httpunit.WebConversation;
+import com.meterware.httpunit.WebRequest;
+import com.meterware.httpunit.WebResponse;
+
 public class LocalWebServer {
+
+    private static final String DEFAULT_CONTENT_TYPE = "application/json";
 
     private WebServer webServer;
     private int port;
@@ -26,13 +31,17 @@ public class LocalWebServer {
     }
 
     public Answer get(String path) throws Exception {
-        URL url = new URL("http://localhost:" + port + path);
-        HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
-        int status = httpConn.getResponseCode();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(httpConn.getInputStream()));
-        String body = reader.readLine();
-        reader.close();
-        return new Answer(status, body);
+        WebConversation wc = new WebConversation();
+        WebRequest req = new GetMethodWebRequest("http://localhost:" + port + path);
+        WebResponse resp = wc.getResponse(req);
+        return new Answer(resp.getResponseCode(), new String(resp.getBytes()).trim());
     }
 
+    public Answer post(String path, String data) throws Exception {
+        WebConversation wc = new WebConversation();
+        WebRequest req = new PostMethodWebRequest("http://localhost:" + port + path, new ByteArrayInputStream(
+                data.getBytes()), DEFAULT_CONTENT_TYPE);
+        WebResponse resp = wc.getResponse(req);
+        return new Answer(resp.getResponseCode(), new String(resp.getBytes()).trim());
+    }
 }

@@ -1,4 +1,4 @@
-package com.sebprunier.devoxxfr;
+package com.sebprunier.devoxxfr.question;
 
 import org.jbehave.core.configuration.Configuration;
 import org.jbehave.core.configuration.MostUsefulConfiguration;

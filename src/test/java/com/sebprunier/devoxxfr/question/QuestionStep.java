@@ -1,10 +1,13 @@
-package com.sebprunier.devoxxfr;
+package com.sebprunier.devoxxfr.question;
 
 import org.jbehave.core.annotations.AfterScenario;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 import org.junit.Assert;
+
+import com.sebprunier.devoxxfr.Answer;
+import com.sebprunier.devoxxfr.LocalWebServer;
 
 public class QuestionStep {
 
