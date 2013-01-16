@@ -34,15 +34,19 @@ public class OptimizeResource implements Resource {
         });
 
         // Solve !
+        long start = System.currentTimeMillis();
         OptimizedPlanningSolver solver = new OptimizedPlanningSolver(demands);
         solver.solve();
         FlightPlanning optimizedPlanning = solver.getOptimizedPlanning();
+        System.out.println("Jajascript flight optimization took " + (System.currentTimeMillis() - start) + " ms");
 
         // Send optimized planning
+        String jsonData = new Gson().toJson(optimizedPlanning);
+        System.out.println(jsonData);
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_CREATED);
         PrintWriter writer = response.getWriter();
-        writer.println(new Gson().toJson(optimizedPlanning));
+        writer.println(jsonData);
         writer.close();
     }
 }
