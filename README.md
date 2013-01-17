@@ -1,4 +1,4 @@
 concours-devoxx-france-2013
 ===========================
 
-Repository pour le concours Code Story 2013 - Devoxx France
+Repository for Code Story 2013 contest ! (Devoxx France)
