@@ -32,6 +32,7 @@ public class OptimizeResource implements Resource {
                 return f1.getDepartureTime().compareTo(f2.getDepartureTime());
             }
         });
+        System.out.println("Number of flights : " + demands.size());
 
         // Solve !
         long start = System.currentTimeMillis();
