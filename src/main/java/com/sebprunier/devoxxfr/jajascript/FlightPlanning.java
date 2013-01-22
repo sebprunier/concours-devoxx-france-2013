@@ -3,21 +3,19 @@ package com.sebprunier.devoxxfr.jajascript;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.annotations.Expose;
+
 public class FlightPlanning {
 
+    @Expose
     private Integer gain;
 
+    @Expose
     private List<String> path;
 
     public FlightPlanning() {
         this.gain = 0;
         this.path = new ArrayList<String>();
-    }
-    
-    public FlightPlanning(FlightPlanning fp) {
-        this.gain = fp.gain;
-        this.path = new ArrayList<String>();
-        this.path.addAll(fp.getPath());
     }
     
     public Integer getGain() {

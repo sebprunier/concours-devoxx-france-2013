@@ -1,25 +1,19 @@
 package com.sebprunier.devoxxfr.jajascript;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Stack;
 
 public class OptimizedPlanningSolver {
 
     private FlightPlanning optimizedPlanning;
 
-    private List<FlightDemand> sortedDemands;
-
-    private Integer optimizedGain = 0;
-
-    private String optimizedPath = "";
+    private List<FlightDemand> demands;
 
     public OptimizedPlanningSolver(List<FlightDemand> sortedDemands) {
         super();
-        this.sortedDemands = sortedDemands;
+        this.demands = sortedDemands;
     }
 
     public FlightPlanning getOptimizedPlanning() {
@@ -27,80 +21,50 @@ public class OptimizedPlanningSolver {
     }
 
     public void solve() {
-        Stack<SolvingContext> stack = new Stack<SolvingContext>();
-        stack.push(new SolvingContext(0, 0, 0, ""));
-        while (!stack.isEmpty()) {
-            SolvingContext context = stack.pop();
-            Integer demandIndex = context.getDemandIndex();
-            if (demandIndex >= sortedDemands.size()) {
-                //optimizedPlanning = max(optimizedPlanning, currentPlanning);
-                if (context.getGain() > optimizedGain) {
-                    optimizedGain = context.getGain();
-                    optimizedPath = context.getPath();
-                }
-            } else {
-                // Try with next demand
-                FlightDemand demand = sortedDemands.get(demandIndex);
-                stack.push(new SolvingContext(context.getStartTime()+ demand.getFlightDuration(),
-                        determineNextDemandIndex(demandIndex, demand.getDepartureTime() + demand.getFlightDuration()),
-                        context.getGain() + demand.getPrice(),
-                        context.getPath() + demandIndex + "|"));
-                // Ignore next demand
-                stack.push(new SolvingContext(context.getStartTime(), demandIndex + 1, context.getGain(), context.getPath()));
-            }
-            context = null;
-        }
-        optimizedPlanning = new FlightPlanning();
-        optimizedPlanning.setGain(optimizedGain);
-        String[] pathElements = optimizedPath.split("\\|");
-        optimizedPlanning.setPath(Lists.transform(Arrays.asList(pathElements), new Function<String, String>() {
+        // Add fictive starting flight
+        FlightDemand fictiveFlight = new FlightDemand("##fictive-flight##", -1, 0, 0);
+        demands.add(fictiveFlight);
+
+        // Sort demands by departureTime
+        Collections.sort(demands, new Comparator<FlightDemand>() {
             @Override
-            public String apply(String s) {
-                return sortedDemands.get(Integer.parseInt(s)).getFlightName();
+            public int compare(FlightDemand f1, FlightDemand f2) {
+                return f1.getDepartureTime().compareTo(f2.getDepartureTime());
             }
-        }));
-        stack = null;
-    }
+        });
 
-    private Integer determineNextDemandIndex(Integer demandIndex, Integer nextAvailableDeparture) {
-        Integer nextDemandIndex = demandIndex + 1;
-        Boolean candidateFound = false;
-        while (!candidateFound && nextDemandIndex < sortedDemands.size()) {
-            candidateFound = sortedDemands.get(nextDemandIndex).getDepartureTime() >= nextAvailableDeparture;
-            if (!candidateFound) {
-                nextDemandIndex++;
+        // solve !
+        for (int i = demands.size() - 1; i >= 0; i--) {
+            FlightDemand currentFlight = demands.get(i);
+            Integer nextAvailableDepartureTime = currentFlight.getDepartureTime() + currentFlight.getFlightDuration();
+            Integer maxGainForNextPossibleFlight = 0;
+            FlightDemand bestNextPossibleFlight = null;
+            for (int j = i + 1; j < demands.size(); j++) {
+                FlightDemand nextPossibleFlight = demands.get(j);
+                if (nextPossibleFlight.getDepartureTime() >= nextAvailableDepartureTime) {
+                    if (nextPossibleFlight.getGainForBestNextFlightDemand() > maxGainForNextPossibleFlight) {
+                        bestNextPossibleFlight = nextPossibleFlight;
+                    }
+                }
             }
+            currentFlight.setBestNextFlightDemand(bestNextPossibleFlight);
+            Integer gainForBestNextFlightDemand = currentFlight.getPrice();
+            if (bestNextPossibleFlight != null) {
+                gainForBestNextFlightDemand += bestNextPossibleFlight.getGainForBestNextFlightDemand();
+            }
+            currentFlight.setGainForBestNextFlightDemand(gainForBestNextFlightDemand);
         }
-        return nextDemandIndex;
+
+        // make solution
+        optimizedPlanning = new FlightPlanning();
+        FlightDemand bestFlightDemand = fictiveFlight.getBestNextFlightDemand();
+        optimizedPlanning.setGain(bestFlightDemand.getGainForBestNextFlightDemand());
+        List<String> bestPath = new ArrayList<String>();
+        while (bestFlightDemand != null) {
+            bestPath.add(bestFlightDemand.getFlightName());
+            bestFlightDemand = bestFlightDemand.getBestNextFlightDemand();
+        }
+        optimizedPlanning.setPath(bestPath);
     }
 
-    private class SolvingContext {
-        private Integer startTime;
-        private Integer demandIndex;
-        private Integer gain;
-        private String path;
-
-        private SolvingContext(Integer startTime, Integer demandIndex, Integer gain, String path) {
-            this.startTime = startTime;
-            this.demandIndex = demandIndex;
-            this.gain = gain;
-            this.path = path;
-        }
-
-        public Integer getStartTime() {
-            return startTime;
-        }
-
-        public Integer getDemandIndex() {
-            return demandIndex;
-        }
-
-        public Integer getGain() {
-            return gain;
-        }
-
-        public String getPath() {
-            return path;
-        }
-    }
 }
