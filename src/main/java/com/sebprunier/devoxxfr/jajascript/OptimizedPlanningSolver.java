@@ -39,11 +39,18 @@ public class OptimizedPlanningSolver {
             Integer nextAvailableDepartureTime = currentFlight.getDepartureTime() + currentFlight.getFlightDuration();
             Integer maxGainForNextPossibleFlight = 0;
             FlightDemand bestNextPossibleFlight = null;
+            Integer maxDepartureTimeToTakeIntoAccount = Integer.MAX_VALUE;
             for (int j = i + 1; j < demands.size(); j++) {
                 FlightDemand nextPossibleFlight = demands.get(j);
+                if (nextPossibleFlight.getDepartureTime() >= maxDepartureTimeToTakeIntoAccount) {
+                    // no need to go further ...
+                    break;
+                }
                 if (nextPossibleFlight.getDepartureTime() >= nextAvailableDepartureTime) {
+                    maxDepartureTimeToTakeIntoAccount = Math.min(maxDepartureTimeToTakeIntoAccount, nextPossibleFlight.getDepartureTime() + nextPossibleFlight.getFlightDuration());
                     if (nextPossibleFlight.getGainForBestNextFlightDemand() > maxGainForNextPossibleFlight) {
                         bestNextPossibleFlight = nextPossibleFlight;
+                        maxGainForNextPossibleFlight = nextPossibleFlight.getGainForBestNextFlightDemand();
                     }
                 }
             }
