@@ -11,6 +11,7 @@ import com.sebprunier.devoxxfr.Resource;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,12 +39,19 @@ public class QuestionResource implements Resource {
         String answer = ANSWERS.get(question);
         if (answer == null) {
             // Try groovy interpreter ...
-            // FIXME security issue here !!!
+            // FIXME security issue here !!! Check question with a regexp
             try {
                 String expr = question.replaceAll(" ", "+");
                 expr = expr.replaceAll(",", "\\.");
                 Object res = new GroovyShell().evaluate(expr);
-                answer = new DecimalFormat("0.####################################################################################################").format(res);
+                if (res instanceof BigDecimal) {
+                    BigDecimal bd = (BigDecimal) res;
+                    bd = bd.stripTrailingZeros();
+                    answer = bd.toPlainString();
+                }
+                else {
+                    answer = String.valueOf(res);
+                }
                 answer = answer.replaceAll("\\.", ",");
             } catch (Exception e) {
                 e.printStackTrace(System.err);
