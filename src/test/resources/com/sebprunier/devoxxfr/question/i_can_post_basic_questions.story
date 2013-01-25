@@ -29,3 +29,7 @@ Then the answer must be OUI
 Given a codestory webserver
 When the question is As+tu+copie+le+code+de+ndeloof(OUI/NON/JE_SUIS_NICOLAS)
 Then the answer must be NON
+
+Given a codestory webserver
+When the question is Souhaites-tu-participer-a-la-suite-de-Code-Story(OUI/NON)
+Then the answer must be NON

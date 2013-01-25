@@ -6,6 +6,10 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
+    <properties>
+        <skipTest>false</skipTest>
+    </properties>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -44,7 +48,7 @@
 						<id>run-stories-as-embeddables</id>
 						<phase>test</phase>
 						<configuration>
-							<skip>true</skip>
+							<skip>${skipTest}</skip>
 							<scope>test</scope>
 							<includes>
 								<include>**/ICan*.java</include>

@@ -31,6 +31,7 @@ public class QuestionResource implements Resource {
         ANSWERS.put("As tu passe une bonne nuit malgre les bugs de l etape precedente(PAS_TOP/BOF/QUELS_BUGS)", "QUELS_BUGS");
         ANSWERS.put("As tu bien recu le second enonce(OUI/NON)", "OUI");
         ANSWERS.put("As tu copie le code de ndeloof(OUI/NON/JE_SUIS_NICOLAS)", "NON");
+        ANSWERS.put("Souhaites-tu-participer-a-la-suite-de-Code-Story(OUI/NON)", "NON");
     }
 
     @Override
